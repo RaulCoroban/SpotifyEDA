@@ -46,17 +46,24 @@ def plot_bar_frequency(sample):
     artists = sample['artistName']
     y_pos = np.arange(len(artists))
     
-    plt.bar(y_pos, sample['msPlayed'], align='center', color='coral')
+    plt.bar(y_pos, sample['playTime_min'], align='center', color='coral')
     plt.xticks(y_pos, artists, rotation=90)
-    plt.ylabel('Time Played')
+    plt.ylabel('Time Played (mins)')
     plt.title('Artist')
+    
+    hours = (int(np.max(sample['playTime_min']))/1000)%60
+    
+    while hours > 1:
+        plt.axhline(hours*1000)
+        hours -=1
     
     plt.show()
 
 
 def preprocess(data):
     # Transforms ms to hours:minutes:seconds
-    data['playTime'] = data.msPlayed.apply(to_time)
+    data['playTime'] = data.msPlayed.apply(to_time_format)
+    data['playTime_min'] = data.msPlayed.apply(to_mins)
     
     return data
 
@@ -65,8 +72,12 @@ def preprocess(data):
 # Support Functions
 # -----------------------------
 
-def to_time(millis):
-    return datetime.datetime.fromtimestamp(millis).strftime('%H:%M:%S')
+def to_time_format(millis, formattime ='%H:%M:%S'):
+    return datetime.datetime.fromtimestamp(millis).strftime(formattime)
+
+def to_mins(millis):
+    return (int(millis)/(1000*60))%60
+    
         
 
 if __name__ == '__main__':
@@ -75,9 +86,71 @@ if __name__ == '__main__':
     full_data = files_to_df(test_path)
     pro_data = preprocess(full_data)
     
-    # Group by artist
+    # Artist overall ranking
     data_artist = group_artist(pro_data)
     plot_bar_frequency(data_artist)
     
+    # Artists over the time (barplot)
+    
+    # CUSTOM artist over time
 
-    # Group by day or month
+    # Artists number of songs, albums    
+
+    # Days of the week streaming time
+    
+    # Days of the week streaming artists
+    
+    # Days of the week streaming CUSTOM artist
+    
+    # Months streaming time
+    
+    # Months streaming artists
+
+    # Months streaming CUSTOM artist
+    
+    # Time played during the year (highlight lockdown)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
